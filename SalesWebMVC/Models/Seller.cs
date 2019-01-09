@@ -12,6 +12,8 @@ namespace SalesWebMVC.Models
         public double BaseSalary { get; set; }
         public DateTime BirthDate { get; set; }
         public Department Department { get; set; } // Relação One to one, cada vendedor tem um departamento.
+        public int DepartmentId { get; set; } // Criamos DepartmentId para garantir que o DepartmentId não seja = Null,
+        // pois qualquer struct não pode ser null.
         public ICollection<SalesRecord> Sales { get; set; } = new List<SalesRecord>();
         // Relação one to many, ou seja, um vendedor pode possuir várias vendas.
 

@@ -22,6 +22,7 @@ namespace SalesWebMVC.Services
 
         public void Insert(Seller obj)
         {
+            obj.Department = _context.Department.First(); // Solução Temporária.
             _context.Add(obj); // metódo para adicionar o objeto no banco de dados.
             _context.SaveChanges();
         }
