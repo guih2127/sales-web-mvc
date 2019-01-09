@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using SalesWebMVC.Models;
 using SalesWebMVC.Data;
+using SalesWebMVC.Services;
 
 namespace SalesWebMVC
 {
@@ -43,6 +44,10 @@ namespace SalesWebMVC
 
             services.AddScoped<SeedingService>();
             // Registra o serviço de seeding. no sistema de injeção de dependências da aplipcação.
+
+            services.AddScoped<SellerService>();
+            // Registra o serviço do Seller, aonde estarão contidas nossas regras de negócios e operações
+            // relacionadas aos Sellers (resolvemos não fazer isso no controlador, e sim em uma divisão separada).
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
