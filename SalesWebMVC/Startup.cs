@@ -46,8 +46,10 @@ namespace SalesWebMVC
             // Registra o serviço de seeding. no sistema de injeção de dependências da aplipcação.
 
             services.AddScoped<SellerService>();
-            // Registra o serviço do Seller, aonde estarão contidas nossas regras de negócios e operações
+            // Registra o serviço do Seller, onde estarão contidas nossas regras de negócios e operações
             // relacionadas aos Sellers (resolvemos não fazer isso no controlador, e sim em uma divisão separada).
+
+            services.AddScoped<DepartmentService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
