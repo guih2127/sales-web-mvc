@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using SalesWebMVC.Models;
 using SalesWebMVC.Models.ViewModels;
 using SalesWebMVC.Services;
+using SalesWebMVC.Services.Exceptions;
 
 namespace SalesWebMVC.Controllers
 {
@@ -82,6 +83,50 @@ namespace SalesWebMVC.Controllers
             }
 
             return View(obj);
+        }
+
+        public IActionResult Edit(int? id)
+        {
+            if (id == null) // testa se o id existe (se a requisição é válida, no caso)
+            {
+                return NotFound();
+            }
+
+            var obj = _sellerService.FindById(id.Value); // obtém obj a partir do id
+            if (obj == null) // testa se o obj existe no banco de dados
+            {
+                return NotFound();
+            }
+
+            List<Department> departments = _departmentService.FindAll();
+            SellerFormViewModel viewModel = new SellerFormViewModel { Seller = obj, Departments = departments };
+            // Aqui obtemos uma lista dos departments e criamos uma nova instância de SellerFormViewModel,
+            // que leva o objeto que obtemos a partir do id e a lista de departamentos como parâmetro, então
+            // retornamos esses dados para a view, abaixo.
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(int? id, Seller seller) 
+        {
+            if(id != seller.Id) // Testa se o id a ser atualizado é o mesmo da requisição
+            {
+                return BadRequest();
+            }
+            try
+            {
+                _sellerService.Update(seller);
+            }
+            catch(NotFoundException)
+            {
+                return NotFound();
+            }
+            catch(DbConcurrencyException)
+            {
+                return BadRequest();
+            }
+            return RedirectToAction(nameof(Index));
         }
     }
 }
