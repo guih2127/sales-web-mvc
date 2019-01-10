@@ -43,5 +43,29 @@ namespace SalesWebMVC.Controllers
         }
         // Criação do metódo Post da nossa view Create, que recebe um Seller através da requisição,
         // chama o metódo Insert que criamos no SellerService e então completa a inserção no db.
+
+        public IActionResult Delete(int? id) // Int Opcional.
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var obj = _sellerService.FindById(id.Value);
+            if (obj == null)
+            {
+                return NotFound();
+            }
+
+            return View(obj);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Delete(int id)
+        {
+            _sellerService.Remove(id);
+            return RedirectToAction(nameof(Index));
+        }
     }
 }
